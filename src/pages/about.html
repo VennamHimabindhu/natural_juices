@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>About Us - Natural Juice</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #ffffff;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+      color: #333;
+    }
+
+    /* Header */
+    .header {
+      background: #f8f8f8;
+      padding: 20px;
+      color: black;
+      font-size: 24px;
+      border-bottom: 1px solid #ddd;
+    }
+
+    /* Navbar */
+    .navbar .btn {
+      text-decoration: none;
+      margin: 0 10px;
+      color: black;
+      font-weight: bold;
+      transition: color 0.3s ease-in-out;
+    }
+
+    .navbar .btn:hover {
+      color: gray;
+    }
+
+    /* Sections */
+    .about-section, .mission, .values {
+      background: #f9f9f9;
+      padding: 20px;
+      margin: 20px auto;
+      width: 80%;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      transform: translateY(20px);
+      transition: transform 0.5s ease-in-out, box-shadow 0.3s ease-in-out;
+    }
+
+    .about-section:hover, .mission:hover, .values:hover {
+      transform: translateY(0);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+    }
+
+    /* List */
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    ul li {
+      padding: 10px;
+      font-weight: bold;
+      color: black;
+    }
+
+    /* Footer */
+    .footer {
+      background: #f8f8f8;
+      color: black;
+      padding: 10px;
+      margin-top: 20px;
+      border-top: 1px solid #ddd;
+    }
+
+    /* Image Container */
+    .image-container {
+      text-align: center;
+      margin: 20px 0;
+    }
+
+    .image-container img {
+      width: 50%;
+      max-width: 300px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease-in-out;
+    }
+
+    .image-container img:hover {
+      transform: scale(1.05);
+    }
+  </style>
+</head>
+
+<body>
+  <header class="header">
+    <h1>About Natural Juice</h1>
+    <nav class="navbar">
+      <a href="home.html" class="btn">Home</a>
+      <a href="product.html" class="btn">Products</a>
+      <a href="contact.html" class="btn">Contact Us</a>
+    </nav>
+  </header>
+
+  <div class="image-container">
+    <img src="images/aboutimg.jpeg" alt="Fresh Natural Juice">
+  </div>
+
+  <main>
+    <section class="about-section">
+      <h2>Our Story</h2>
+      <p>Natural Juice was founded with a mission to provide fresh, natural, and healthy juice options for everyone. We believe in the power of nature to nourish and refresh your body.</p>
+      <img src="images/all.jpg" alt="Our Story" class="image-container">
+    </section>
+
+    <section class="mission">
+      <h2>Our Mission</h2>
+      <p>We aim to deliver high-quality, nutrient-rich juices made from the finest ingredients. Our goal is to promote a healthier lifestyle through our delicious and refreshing drinks.</p>
+      <img src="images/alljuices.jpg" alt="Our Mission" class="image-container">
+    </section>
+
+    <section class="values">
+      <h2>Why Choose Us?</h2>
+      <ul>
+        <li>🍊 100% Natural Ingredients</li>
+        <li>🍏 No Added Preservatives</li>
+        <li>🥤 Freshly Made Juices</li>
+        <li>🍓 Customizable Juice Options</li>
+      </ul>
+      <img src="images/why_choose_us.jpg" alt="Why Choose Us" class="image-container">
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>&copy; 2025 Natural Juice. All rights reserved.</p>
+  </footer>
+</body>
+
+</html>

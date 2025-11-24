@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Summary</title>
+    <link rel="stylesheet" href="../css/ordersummary.css">
+</head>
+<body>
+    <header>
+        <h1>Your Juice Summary</h1>
+    </header>
+    
+    <nav class="navbar">
+        <a href="home.html">Home</a>
+        <a href="product.html">Menu</a>
+        <a href="cust.html" class="active">Customize Juice</a>
+        <a href="contact.html">Contact Us</a>
+    </nav>
+
+    <main>
+        <div class="summary-container">
+            <h2>Selected Ingredients</h2>
+            <ul id="ingredient-list"></ul>
+
+            <h2>Health Benefits</h2>
+            <p id="health-benefits"></p>
+
+            <h2>Vitamin Content</h2>
+            <p id="vitamin-content"></p>
+
+            <h2>Total Payment</h2>
+            <p id="total-price"><span id="price-amount">0.00</span></p>
+
+            <button id="proceed-to-pay" class="btn">Proceed to Pay</button>
+        </div>
+    </main>
+
+    <script src="../js/ordersummary.js" defer></script>
+</body>
+</html>

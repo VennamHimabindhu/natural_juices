@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Payment - Natural Juice</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+    
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #f4f4f9;
+      margin: 0;
+      padding: 0;
+      color: #333;
+    }
+    .container {
+      max-width: 600px;
+      margin: 40px auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      text-align: center;
+    }
+    h2 {
+      color: #28a745;
+    }
+    .order-summary {
+      padding: 15px;
+      border-radius: 8px;
+      background: #f8f9fa;
+      margin-bottom: 20px;
+      text-align: left;
+    }
+    .price {
+      font-size: 22px;
+      color: #e44d26;
+      font-weight: bold;
+    }
+    input, select {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+    }
+    .btn {
+      display: inline-block;
+      width: 100%;
+      padding: 12px;
+      background: #28a745;
+      color: white;
+      font-size: 16px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.3s ease-in-out;
+    }
+    .btn:hover {
+      background: #218838;
+    }
+    .confirmation {
+      display: none; /* Initially hidden */
+      margin-top: 20px;
+      padding: 15px;
+      border-radius: 8px;
+      background: #d4edda;
+      color: #155724;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h2>Payment Details</h2>
+    
+    <div class="order-summary">
+      <h3>Order Summary</h3>
+      <p><strong>Product:</strong> <span id="product-name"></span></p>
+      <p><strong>Price:</strong> <span id="product-price" class="price"></span></p>
+    </div>
+
+    <form id="payment-form">
+      <h3>Enter Your Details</h3>
+      <input type="text" id="name" placeholder="Full Name" required>
+      <input type="email" id="email" placeholder="Email Address" required>
+      <input type="text" id="address" placeholder="Delivery Address" required>
+      
+      <h3>Select Payment Method</h3>
+      <select id="payment-method" required>
+        <option value="credit-card">Credit Card</option>
+        <option value="debit-card">Debit Card</option>
+        <option value="upi">UPI</option>
+        <option value="cod">Cash on Delivery</option>
+      </select>
+
+      <button type="submit" class="btn">Complete Payment</button>
+    </form>
+  
+    <!-- Order Confirmation Message -->
+    <div class="confirmation" id="confirmation-message">
+      <p>🎉 Order Placed Successfully! Your order is now being processed.</p>
+      <a href="http://127.0.0.1:5500/track2.html" class="tracking-link">Track Your Order</a>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      // Retrieve product details from localStorage
+      document.getElementById("product-name").textContent = localStorage.getItem("productName") || "Unknown";
+      document.getElementById("product-price").textContent = `₹${localStorage.getItem("productPrice") || "0"}/-`;
+
+      // Get form and confirmation elements
+      const paymentForm = document.getElementById("payment-form");
+      const confirmationMessage = document.getElementById("confirmation-message");
+
+      // Handle Payment Submission
+      paymentForm.addEventListener("submit", function (event) {
+        event.preventDefault(); // Prevent default form submission
+
+        // Hide form & show confirmation message
+        paymentForm.style.display = "none";
+        confirmationMessage.style.display = "block";
+      });
+    });
+  </script>
+
+</body>
+</html>

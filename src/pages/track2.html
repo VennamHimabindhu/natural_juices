@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Track Your Order</title>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVnOTLTZN5ZHoYPmOQ11IX_hl2uTs2hl0
+    &libraries=places&callback=initMap" async defer></script>
+    <style>
+        body { 
+            font-family: 'Poppins', sans-serif; 
+            text-align: center; 
+            padding: 20px; 
+            background-color: #f4f7fc; 
+            color: #333; 
+        }
+
+        h1 { 
+            font-size: 28px; 
+            color: #2c3e50; 
+            margin-bottom: 20px; 
+        }
+
+        /* Container for Map and Details */
+        #container {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 30px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        /* Map Box */
+        #map { 
+            width: 50%; 
+            height: 450px; 
+            border-radius: 12px; 
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            border: 2px solid #ddd;
+        }
+
+        /* Tracking Details */
+        #tracking-details { 
+            background: white;
+            padding: 20px; 
+            border-radius: 12px; 
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); 
+            text-align: left;
+            min-width: 280px; 
+            border: 2px solid #ddd;
+        }
+
+        #tracking-details div {
+            font-size: 18px; 
+            padding: 10px 0; 
+            border-bottom: 1px solid #eee; 
+        }
+
+        #tracking-details div:last-child {
+            border-bottom: none;
+        }
+
+        #distance-info, #time-info { 
+            color: #007bff; 
+            font-weight: bold; 
+        }
+
+        #delivery-status { 
+            font-weight: bold; 
+            color: #27ae60; 
+        }
+
+        /* Input & Button Styles */
+        input, button { 
+            padding: 12px; 
+            font-size: 16px; 
+            margin: 10px; 
+            border-radius: 8px; 
+            border: 1px solid #ddd;
+            outline: none;
+        }
+
+        #location-input { 
+            width: 60%; 
+            max-width: 400px; 
+            padding: 12px; 
+        }
+
+        button {
+            background-color: #007bff; 
+            color: white; 
+            font-weight: bold; 
+            cursor: pointer;
+            transition: 0.3s;
+            border: none;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 900px) {
+            #container {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            #map {
+                width: 90%;
+                height: 350px;
+            }
+
+            #tracking-details {
+                width: 90%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Track Your Order</h1>
+    
+    <input id="location-input" type="text" placeholder="Enter delivery location">
+    <button onclick="calculateRoute()">Track Order</button>
+
+    <div id="container">
+        <div id="map"></div>
+        <div id="tracking-details">
+            <div id="distance-info">Distance: --</div>
+            <div id="time-info">Estimated Time: --</div>
+        </div>
+    </div>
+    <script>
+        let map, marker;
+        const STORE_LAT = 17.9784; // Warangal latitude
+        const STORE_LNG = 79.5910; // Warangal longitude
+        let customerLat, customerLng;
+
+        function initMap() {
+            let storeLocation = { lat: STORE_LAT, lng: STORE_LNG };
+
+            map = new google.maps.Map(document.getElementById("map"), {
+                center: storeLocation,
+                zoom: 10
+            });
+
+            new google.maps.Marker({ position: storeLocation, map: map, title: "Store Location" });
+
+            marker = new google.maps.Marker({
+                map: map,
+                draggable: true
+            });
+
+            let input = document.getElementById("location-input");
+            let autocomplete = new google.maps.places.Autocomplete(input);
+            autocomplete.bindTo("bounds", map);
+
+            autocomplete.addListener("place_changed", function () {
+                let place = autocomplete.getPlace();
+                if (!place.geometry) return;
+
+                customerLat = place.geometry.location.lat();
+                customerLng = place.geometry.location.lng();
+
+                marker.setPosition(place.geometry.location);
+                calculateDistance();
+            });
+
+            map.addListener("click", function (event) {
+                customerLat = event.latLng.lat();
+                customerLng = event.latLng.lng();
+                marker.setPosition(event.latLng);
+                calculateDistance();
+            });
+        }
+
+        function calculateDistance() {
+            if (!customerLat || !customerLng) {
+                alert("Please select a location first!");
+                return;
+            }
+
+            let distance = getStraightLineDistance(STORE_LAT, STORE_LNG, customerLat, customerLng);
+            let estimatedTime = getEstimatedTime(distance);
+
+            document.getElementById("distance-info").innerText = `Distance: ${distance.toFixed(2)} km`;
+            document.getElementById("time-info").innerText = `Estimated Time: ${estimatedTime}`;
+        }
+
+        function getStraightLineDistance(lat1, lon1, lat2, lon2) {
+            let R = 6371; // Earth’s radius in km
+            let dLat = (lat2 - lat1) * (Math.PI / 180);
+            let dLon = (lon2 - lon1) * (Math.PI / 180);
+            let a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                Math.cos(lat1 * (Math.PI / 180)) * Math.cos(lat2 * (Math.PI / 180)) *
+                Math.sin(dLon / 2) * Math.sin(dLon / 2);
+            let c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+            return R * c;
+        }
+
+        function getEstimatedTime(distance) {
+            if (distance <= 10) return "15-30 mins";
+            if (distance <= 50) return "30-90 mins";
+            if (distance <= 100) return "1.5 - 3 hours";
+            if (distance <= 200) return "3 - 5 hours";
+            return "5+ hours";
+        }
+    </script>
+</body>
+</html>

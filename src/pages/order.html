@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Order Tracking</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+            padding: 20px;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            margin: auto;
+        }
+        input {
+            width: 80%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .progress-bar {
+            position: relative;
+            height: 10px;
+            background: #ddd;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        .progress {
+            height: 100%;
+            width: 0%;
+            background: green;
+            border-radius: 5px;
+            transition: width 0.5s ease-in-out;
+        }
+        .status-text {
+            font-size: 18px;
+            font-weight: bold;
+            color: green;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Live Order Tracking</h2>
+        <input type="text" id="orderId" placeholder="Enter Order ID">
+        <button onclick="trackOrder()">Track Order</button>
+
+        <div class="progress-bar">
+            <div class="progress" id="progress"></div>
+        </div>
+
+        <p class="status-text" id="statusText">Status: Placed</p>
+    </div>
+
+    <script>
+        const statuses = ["Placed", "Processing", "Out for Delivery", "Delivered"];
+
+        function trackOrder() {
+            const orderId = document.getElementById("orderId").value;
+            if (!orderId) {
+                alert("Please enter an Order ID");
+                return;
+            }
+
+            const socket = new WebSocket("ws://localhost:5000"); // Connect to WebSocket server
+
+            socket.onopen = function() {
+                socket.send(JSON.stringify({ orderId }));
+            };
+
+            socket.onmessage = function(event) {
+                const data = JSON.parse(event.data);
+                updateStatus(data.status);
+            };
+        }
+
+        function updateStatus(status) {
+            const index = statuses.indexOf(status);
+            const progress = document.getElementById("progress");
+            const statusText = document.getElementById("statusText");
+
+            if (index !== -1) {
+                progress.style.width = `${(index / (statuses.length - 1)) * 100}%`;
+                statusText.textContent = `Status: ${status}`;
+            }
+        }
+    </script>
+
+</body>
+</html>

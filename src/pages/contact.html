@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: url('juice-background.jpg') no-repeat center center/cover;
+            margin: 0;
+            min-height: 100vh;
+        }
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            background: white;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .navbar h2 {
+            font-size: 22px;
+            font-weight: bold;
+            color: black;
+        }
+        .navbar nav {
+            display: flex;
+            align-items: center;
+        }
+        .navbar a {
+            color: black;
+            text-decoration: none;
+            margin: 0 12px;
+            font-size: 16px;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            width: 400px;
+            text-align: center;
+            margin: auto;
+            margin-top: 50px;
+            position: relative;
+            flex-grow: 1;
+        }
+        input, textarea {
+            width: 92%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 16px;
+        }
+        button {
+            background: black;
+            color: white;
+            border: none;
+            padding: 12px;
+            cursor: pointer;
+            width: 100%;
+            border-radius: 6px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        button:hover {
+            background: #333;
+        }
+        .error {
+            color: red;
+            font-size: 14px;
+            display: none;
+        }
+        .success-message {
+            display: none;
+            color: green;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+        .footer {
+    background: black;
+    color: white;
+    text-align: center;
+    padding: 15px;
+    font-size: 14px;
+    width: 100%;
+    margin-top: auto; /* Pushes footer to the bottom */
+} .footer {
+            background: rgb(44, 43, 43);
+            color: white;
+            text-align: center;
+            padding: 15px;
+            margin-top: 50px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <h2>Natural Juices</h2>
+        <nav>
+            <a href="homepage.html">Home</a>
+            <a href="product.html">Products</a>
+            <a href="contact.html">Contact</a>
+        </nav>
+    </div>
+    
+    <div class="container">
+        <h2>Contact Us</h2>
+        <form id="contact-form">
+            <input type="text" id="name" placeholder="Full Name" required>
+            <span class="error" id="name-error">Name must be at least 3 characters</span>
+            
+            <input type="email" id="email" placeholder="Email" required>
+            <span class="error" id="email-error">Invalid email format</span>
+            
+            <textarea id="message" placeholder="Your Message" required></textarea>
+            <span class="error" id="message-error">Message must be at least 10 characters</span>
+            
+            <button type="submit">Send Message</button>
+            <p class="success-message">Your message has been sent successfully!</p>
+        </form>
+    </div>
+    
+    <div class="footer">
+        &copy; 2025 Natural Juices. All Rights Reserved.
+    </div>
+    
+    <script>
+        document.getElementById("contact-form").addEventListener("submit", function(event) {
+            let valid = true;
+            
+            let name = document.getElementById("name").value;
+            let email = document.getElementById("email").value;
+            let message = document.getElementById("message").value;
+            
+            document.getElementById("name-error").style.display = name.length >= 3 ? "none" : "block";
+            document.getElementById("email-error").style.display = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) ? "none" : "block";
+            document.getElementById("message-error").style.display = message.length >= 10 ? "none" : "block";
+            
+            if (name.length < 3 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) || message.length < 10) {
+                valid = false;
+            }
+            
+            if (!valid) {
+                event.preventDefault();
+            } else {
+                event.preventDefault();
+                document.querySelector(".success-message").style.display = "block";
+            }
+        });
+    </script>
+</body>
+</html>

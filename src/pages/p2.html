@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Green Detox Juice - Order</title>
+  <style>
+      @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+    
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #f4f4f9;
+      margin: 0;
+      padding: 0;
+      color: #333;
+    }
+    .container {
+      max-width: 900px;
+      margin: 40px auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      transition: transform 0.3s;
+    }
+    .container:hover {
+      transform: scale(1.02);
+    }
+    .product {
+      display: flex;
+      gap: 20px;
+      align-items: center;
+    }
+    .product img {
+      width: 300px;
+      border-radius: 12px;
+      transition: transform 0.3s ease-in-out;
+    }
+    .product img:hover {
+      transform: scale(1.1);
+    }
+    .details {
+      flex: 1;
+    }
+    .price {
+      font-size: 24px;
+      color: #e44d26;
+      font-weight: bold;
+    }
+    .btn {
+      display: inline-block;
+      padding: 12px 18px;
+      background: #28a745;
+      color: white;
+      font-size: 16px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.3s ease-in-out;
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    }
+    .btn:hover {
+      background: #218838;
+      transform: translateY(-3px);
+    }
+    .reviews {
+      margin-top: 20px;
+      padding: 15px;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+    }
+    .footer {
+      text-align: center;
+      padding: 15px;
+      background: #28a745;
+      color: white;
+      margin-top: 20px;
+      font-weight: bold;
+    }
+    .ingredient-btn {
+      background: #ddd;
+      border: none;
+      padding: 8px 12px;
+      margin: 5px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.3s ease-in-out;
+    }
+    .ingredient-btn.active {
+      background: #28a745;
+      color: white;
+    }
+    .nutrition-analysis {
+      margin-top: 20px;
+      text-align: center;
+    }
+    .fade-in {
+      opacity: 0;
+      transform: translateY(10px);
+      animation: fadeIn 0.5s ease-in-out forwards;
+    }
+    @keyframes fadeIn {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+</head>
+<body>
+    <div class="container">
+        <div class="product">
+          <img id="juice-image" src="images/iron.webp" alt="Iron Boost Juice">
+          <div class="details">
+            <h2>Iron Boost Juice</h2>
+            <p><strong>Ingredients:</strong> <span id="selected-ingredients">Beetroot, Carrot, Apple, Ginger, Lemon</span></p>
+            <p><strong>Description:</strong> A powerful, iron-rich juice designed to enhance hemoglobin levels, support energy production, and improve circulation.</p>
+            <p class="price" id="price">₹160/-</p>
+            <p><strong>Quantity:</strong> <input type="number" id="quantity" value="1" min="1" onchange="updatePrice()"> bottle(s)</p>
+            <button class="btn" onclick="proceedToPayment()">Proceed to Payment</button>
+          </div>
+        </div>
+        
+        <h3>Select Ingredients:</h3>
+        <div id="ingredient-selection">
+          <button class="ingredient-btn active" onclick="toggleIngredient(this, 'Beetroot')">Beetroot</button>
+          <button class="ingredient-btn active" onclick="toggleIngredient(this, 'Carrot')">Carrot</button>
+          <button class="ingredient-btn active" onclick="toggleIngredient(this, 'Apple')">Apple</button>
+          <button class="ingredient-btn active" onclick="toggleIngredient(this, 'Ginger')">Ginger</button>
+          <button class="ingredient-btn active" onclick="toggleIngredient(this, 'Lemon')">Lemon</button>
+        </div>
+        
+    
+    <div class="nutrition-analysis">
+      <h3>Smart Nutrition Analysis 🥦📊</h3>
+      <button class="btn" onclick="analyzeNutrition()">Analyze Nutrition</button>
+      <p id="nutrition-info"></p>
+    </div>
+    
+    <div class="reviews">
+      <h3>Customer Reviews</h3>
+      <div id="review-list">
+        <p><strong>Ayesha:</strong> "Refreshing and healthy! A great way to start the day."</p>
+      </div>
+      <h4>Leave a Review</h4>
+      <textarea id="review-text" placeholder="Write your review here..."></textarea>
+      <button class="btn" onclick="submitReview()">Submit Review</button>
+    </div>
+  </div>
+  
+  <footer class="footer">&copy; 2025 Natural Juice. All rights reserved.</footer>
+
+  <script>
+    const nutritionData = {
+        'Beetroot': 'Rich in iron and folate, great for blood health.',
+        'Carrot': 'High in vitamin A, supports vision and immunity.',
+        'Apple': 'Packed with fiber and antioxidants, promotes digestion.',
+        'Ginger': 'Anti-inflammatory and aids digestion.',
+        'Lemon': 'High in vitamin C, boosts immunity and skin health.'
+    };
+
+    function updatePrice() {
+      let quantity = document.getElementById("quantity").value;
+      document.getElementById("price").textContent = `₹${140 * quantity}/-`;
+    }
+
+    function proceedToPayment() {
+    let productName = "Iron Boost Juice"; 
+    let productPrice = parseFloat(document.getElementById("price").textContent.replace("₹", "").replace("/-", ""));
+
+    // Store product details in localStorage
+    localStorage.setItem("productName", productName);
+    localStorage.setItem("productPrice", productPrice);
+
+    // Redirect to payment page
+    window.location.href = "payment.html";
+}
+    
+    function toggleIngredient(button, ingredient) {
+      button.classList.toggle("active");
+      let selectedText = document.getElementById("selected-ingredients");
+      let ingredients = selectedText.textContent.split(", ");
+      if (button.classList.contains("active")) {
+        ingredients.push(ingredient);
+      } else {
+        ingredients = ingredients.filter(item => item !== ingredient);
+      }
+      selectedText.textContent = ingredients.join(", ");
+    }
+
+    function analyzeNutrition() {
+  let selectedIngredients = document.getElementById("selected-ingredients").textContent.split(", ");
+  let nutritionText = selectedIngredients.map(ing => `<li><strong>${ing}:</strong> ${nutritionData[ing] || "No data available."}</li>`).join("");
+  document.getElementById("nutrition-info").innerHTML = `<ul>${nutritionText}</ul>`;
+}
+
+
+    function submitReview() {
+      let reviewText = document.getElementById("review-text").value;
+      if (reviewText.trim() === "") {
+        alert("Please enter a review before submitting.");
+        return;
+      }
+      let reviewList = document.getElementById("review-list");
+      let newReview = document.createElement("p");
+      newReview.innerHTML = `<strong>You:</strong> "${reviewText}"`;
+      reviewList.appendChild(newReview);
+      document.getElementById("review-text").value = "";
+    }
+  </script>
+</body>
+</html>

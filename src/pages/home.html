@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Natural Juices</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #fff;
+            margin: 0;
+            padding: 0;
+        }
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            border-bottom: 1px solid #ccc;
+        }
+        .navbar .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .navbar nav a {
+            text-decoration: none;
+            color: black;
+            margin: 0 15px;
+            font-size: 18px;
+        }
+        .search-bar {
+            display: flex;
+            align-items: center;
+            border: 1px solid #ccc;
+            padding: 5px;
+            border-radius: 5px;
+        }
+        .search-bar input {
+            border: none;
+            outline: none;
+            font-size: 16px;
+            padding: 5px;
+        }
+        .slider {
+            width: 100%;
+            height: 400px;
+            overflow: hidden;
+            position: relative;
+        }
+        .slides {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+        .slides img {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+        }
+        .prev, .next {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            color: black;
+            padding: 10px;
+            cursor: pointer;
+            border: none;
+        }
+        .prev { left: 10px; }
+        .next { right: 10px; }
+        .section {
+            text-align: center;
+            padding: 20px;
+        }
+        .section h2 {
+            margin-bottom: 15px;
+        }
+        .product-list {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .product {
+            border: 1px solid #ccc;
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+            width: 200px;
+        }
+        .product img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+        .chat-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #ff6600;
+            color: white;
+            padding: 12px 18px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 14px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+        }
+        .special-offers {
+            background: #f8f8f8;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px;
+        }
+        .special-offers img {
+            width: 250px;
+            height: 170px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <div class="logo">Natural Juices</div>
+        <div class="search-bar">
+            <input type="text" id="voiceSearch" placeholder="What are you looking for?" onkeypress="manualSearch(event)">
+            <button onclick="startVoiceSearch()"><i class="fas fa-search"></i></button>
+        </div>
+        <nav>
+            <a href="home.html">Home</a>
+            <a href="product.html">Products</a>
+            <a href="cust.html">Customize</a>
+            <a href="about.html">About Us</a>
+            <a href="contact.html">Contact</a>
+            <a href="login.html">Login</a>
+        </nav>
+    </div>
+    
+    <div class="slider">
+        <button class="prev" onclick="prevSlide()">&#10094;</button>
+        <div class="slides">
+            <img src="images/slide1.png" alt="Juice 1">
+            <img src="images/2slide.jpg" alt="Juice 2">
+            <img src="images/nyc.avif" alt="Juice 3">
+            <img src="images/slide4.jpg" alt="Juice 4">
+        </div>
+        <button class="next" onclick="nextSlide()">&#10095;</button>
+    </div>
+    
+    <div class="section special-offers">        <h2>🔥 Special Offers 🔥</h2>
+        <p>🛍️ Get <b>10% off</b> on your first order!</p>
+        <img src="images/orangr.jpg" alt="10% Off Offer">
+        <p>🥤 Buy 2, Get 1 Free on all shakes!</p>
+        <img src="images/refresh.jpg" alt="Buy 2 Get 1 Free Offer">
+    </div>
+    
+    <div class="section">
+        <h2>🏆 Best Sellers 🏆</h2>
+        <div class="product-list" id="recommendedJuices"></div>
+    </div>
+    
+  
+    
+    <div class="footer">&copy; 2025 Natural Juices. All Rights Reserved.</div>
+    
+    <script>
+              const juiceData = [
+            { name: "Green Detox Juice", img: "images/green detox.jpg" },
+            { name: "Iron Boost Juice", img: "images/iron.webp" },
+            { name: "ABC+ Juice", img: "images/abd juice.webp" },
+            { name: "Mango Shake", img: "images/mango.jpeg" },
+        ];
+
+        function populateSection(sectionId, products) {
+            const section = document.getElementById(sectionId);
+            section.innerHTML = products.map(p => `
+                <div class="product">
+                    <img src="${p.img}" alt="${p.name}">
+                    <p>${p.name}</p>
+                </div>
+            `).join('');
+        }
+        
+        document.addEventListener("DOMContentLoaded", function() {
+            populateSection("recommendedJuices", juiceData);
+            populateSection("bestSellers", juiceData.reverse());
+        });
+        function startVoiceSearch() {
+    const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+    
+    recognition.onstart = function () {
+        console.log("Voice search started...");
+    };
+
+    recognition.onresult = function (event) {
+        const searchQuery = event.results[0][0].transcript.toLowerCase().trim();
+        console.log("Recognized:", searchQuery);
+        document.getElementById('voiceSearch').value = searchQuery; 
+        searchJuice(searchQuery);
+    };
+
+    recognition.onerror = function (event) {
+        console.error("Error in voice recognition:", event.error);
+    };
+
+    recognition.start();
+}
+
+        function manualSearch(event) {
+            if (event.key === 'Enter') {
+                const searchQuery = event.target.value.toLowerCase();
+                searchJuice(searchQuery);
+            }
+        }
+        function searchJuice(query) {
+    if (juicePages[query]) {
+        window.location.href = juicePages[query]; // Redirect to the matched product page
+    } else {
+        window.location.href = "product.html"; // Redirect to product page if no match found
+    }
+}
+
+    window.location.href = `search.html?query=${encodeURIComponent(query)}`;
+
+
+    </script>
+</body>
+</html>

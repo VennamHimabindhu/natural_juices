@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Natural Juices</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #fff;
+            margin: 0;
+            padding: 0;
+        }
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            border-bottom: 1px solid #ccc;
+        }
+        .navbar .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .navbar nav a {
+            text-decoration: none;
+            color: black;
+            margin: 0 15px;
+            font-size: 18px;
+        }
+        .search-bar {
+            display: flex;
+            align-items: center;
+            border: 1px solid #ccc;
+            padding: 5px;
+            border-radius: 5px;
+        }
+        .search-bar input {
+            border: none;
+            outline: none;
+            font-size: 16px;
+            padding: 5px;
+        }
+        .slider {
+            width: 100%;
+            height: 400px;
+            overflow: hidden;
+            position: relative;
+        }
+        .slides {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+        .slides img {
+            width: 100%;
+            height: 400px;
+        }
+        .prev, .next {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            padding: 10px;
+            cursor: pointer;
+            border: none;
+        }
+        .prev { left: 10px; }
+        .next { right: 10px; }
+        .categories {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+        }
+        .categories a {
+            text-decoration: none;
+            color: black;
+            font-size: 18px;
+            margin: 0 15px;
+        }
+        .offers {
+            text-align: center;
+            padding: 20px;
+        }
+        .footer {
+            text-align: center;
+            padding: 20px;
+            border-top: 1px solid #ccc;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <div class="logo">Natural Juices</div>
+        <div class="search-bar">
+            <input type="text" placeholder="What are you looking for?">
+            <i class="fas fa-search"></i>
+        </div>
+        <nav>
+            <a href="#">Home</a>
+            <a href="#">Categories</a>
+            <a href="#">Best Sellers</a>
+            <a href="#">About Us</a>
+            <a href="#">Contact</a>
+            <a href="#">Login</a>
+        </nav>
+    </div>
+    
+    <div class="slider">
+        <button class="prev" onclick="prevSlide()">&#10094;</button>
+        <div class="slides">
+            <img src="juice1.jpg" alt="Juice 1">
+            <img src="juice2.jpg" alt="Juice 2">
+            <img src="juice3.jpg" alt="Juice 3">
+        </div>
+        <button class="next" onclick="nextSlide()">&#10095;</button>
+    </div>
+    
+    <div class="categories">
+        <a href="#">Raw Juices</a>
+        <a href="#">Shakes</a>
+        <a href="#">Custom Juices</a>
+    </div>
+    
+    <div class="offers">
+        <h2>Special Offers</h2>
+        <p>Get 10% off on your first order! Use code: JUICE10</p>
+        <p>Buy 2 get 1 free on all shakes!</p>
+    </div>
+    
+    <div class="footer">
+        &copy; 2025 Natural Juices. All Rights Reserved.
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelector('.slides');
+        const totalSlides = slides.children.length;
+        let slideCount = 0;
+
+        function updateSlide() {
+            slides.style.transform = `translateX(-${currentSlide * 100}%)`;
+        }
+
+        function nextSlide() {
+            if (slideCount < 3) {
+                currentSlide = (currentSlide + 1) % totalSlides;
+                updateSlide();
+                slideCount++;
+            }
+        }
+
+        function prevSlide() {
+            currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+            updateSlide();
+        }
+
+        setInterval(() => {
+            slideCount = 0;
+            nextSlide();
+        }, 30000);
+    </script>
+</body>
+</html>

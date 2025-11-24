@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Track Your Order</title>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVnOTLTZN5ZHoYPmOQ11IX_hl2uTs2hl0
+    &libraries=places&callback=initMap" async defer></script>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; padding: 20px; background-color: #f8f9fa; }
+        h1 { color: #333; }
+        #map { width: 100%; height: 500px; border-radius: 10px; box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); margin-bottom: 15px; }
+        #tracking-details { background: #fff; padding: 20px; border-radius: 10px; box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); display: inline-block; text-align: left; }
+        #distance, #estimated-time, #delivery-status { font-size: 18px; margin-bottom: 10px; }
+        #delivery-status { font-weight: bold; color: #28a745; }
+        input, button { padding: 10px; font-size: 16px; margin: 5px; }
+        #location-input { width: 80%; max-width: 400px; padding: 10px; }
+    </style>
+</head>
+<body>
+    <h1>Track Your Order</h1>
+    <input id="location-input" type="text" placeholder="Enter delivery location">
+    <button onclick="confirmLocation()">Select Location</button>
+    <div id="map"></div>
+    
+    <div id="tracking-details">
+        <div id="distance">Distance: --</div>
+        <div id="estimated-time">Estimated Time: --</div>
+        <div id="delivery-status"></div>
+    </div>
+
+    <script>
+        let map, marker;
+        const STORE_LAT = 17.9784;
+        const STORE_LNG = 79.5910;
+        let customerLat, customerLng;
+
+        function initMap() {
+            let storeLocation = { lat: STORE_LAT, lng: STORE_LNG };
+            map = new google.maps.Map(document.getElementById("map"), { center: storeLocation, zoom: 10 });
+            new google.maps.Marker({ position: storeLocation, map: map, title: "Store Location" });
+            marker = new google.maps.Marker({ map: map, draggable: true });
+
+            map.addListener("click", function(event) {
+                customerLat = event.latLng.lat();
+                customerLng = event.latLng.lng();
+                marker.setPosition(event.latLng);
+            });
+
+            let input = document.getElementById("location-input");
+            let autocomplete = new google.maps.places.Autocomplete(input);
+            autocomplete.bindTo("bounds", map);
+
+            autocomplete.addListener("place_changed", function () {
+                let place = autocomplete.getPlace();
+                if (!place.geometry) return;
+                customerLat = place.geometry.location.lat();
+                customerLng = place.geometry.location.lng();
+                marker.setPosition(place.geometry.location);
+            });
+        }
+
+        function confirmLocation() {
+            if (!customerLat || !customerLng) {
+                alert("Please select a location on the map or enter an address!");
+                return;
+            }
+            getStraightLineDistance();
+        }
+
+        function getStraightLineDistance() {
+            let R = 6371;
+            let dLat = (customerLat - STORE_LAT) * (Math.PI / 180);
+            let dLon = (customerLng - STORE_LNG) * (Math.PI / 180);
+            let a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                Math.cos(STORE_LAT * (Math.PI / 180)) * Math.cos(customerLat * (Math.PI / 180)) *
+                Math.sin(dLon / 2) * Math.sin(dLon / 2);
+            let c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+            let distance = R * c;
+
+            let estimatedTime = "";
+            if (distance <= 10) estimatedTime = "15-30 mins";
+            else if (distance <= 50) estimatedTime = "30-90 mins";
+            else if (distance <= 100) estimatedTime = "1.5 - 3 hours";
+            else if (distance <= 200) estimatedTime = "3 - 5 hours";
+            else estimatedTime = "5+ hours";
+
+            let deliveryStatus = "";
+            if (distance <= 5) deliveryStatus = "🚀 Your order is arriving soon!";
+            else if (distance <= 50) deliveryStatus = "📦 Your order is on the way!";
+            else if (distance > 200) deliveryStatus = "📅 Expected Delivery: Tomorrow";
+            else if (distance > 500) deliveryStatus = "📅 Expected Delivery: In 2-3 Days";
+
+            document.getElementById("distance").innerText = `Distance: ${distance.toFixed(2)} km`;
+            document.getElementById("estimated-time").innerText = `Estimated Time: ${estimatedTime}`;
+            document.getElementById("delivery-status").innerText = deliveryStatus;
+        }
+    </script>
+</body>
+</html>

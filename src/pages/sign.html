@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login & Sign Up</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: url('juice-background.jpg') no-repeat center center/cover;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            width: 380px;
+            text-align: center;
+        }
+        .form-container {
+            display: none;
+        }
+        .form-container.active {
+            display: block;
+        }
+        input {
+            width: 92%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 16px;
+        }
+        button {
+            background: #ff9800;
+            color: white;
+            border: none;
+            padding: 12px;
+            cursor: pointer;
+            width: 100%;
+            border-radius: 6px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        button:hover {
+            background: #e68900;
+        }
+        a {
+            color: #ff9800;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .error {
+            color: red;
+            font-size: 14px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="form-container active" id="login-container">
+            <h2>Login</h2>
+            <form id="login-form">
+                <input type="email" id="login-email" placeholder="Email" required>
+                <span class="error" id="login-email-error">Invalid email format</span>
+                <input type="password" id="login-password" placeholder="Password" required minlength="6">
+                <span class="error" id="login-password-error">Password must be at least 6 characters</span>
+                <button type="submit">Login</button>
+            </form>
+            <p>Don't have an account? <a href="#" id="show-signup">Sign Up</a></p>
+        </div>
+        
+        <div class="form-container" id="signup-container">
+            <h2>Sign Up</h2>
+            <form id="signup-form">
+                <input type="text" id="signup-name" placeholder="Full Name" required pattern="[A-Za-z ]{3,}">
+                <span class="error" id="signup-name-error">Name must contain only letters and be at least 3 characters long</span>
+                <input type="email" id="signup-email" placeholder="Email" required>
+                <span class="error" id="signup-email-error">Invalid email format</span>
+                <input type="password" id="signup-password" placeholder="Password" required minlength="6">
+                <span class="error" id="signup-password-error">Password must be at least 6 characters</span>
+                <button type="submit">Sign Up</button>
+            </form>
+            <p>Already have an account? <a href="#" id="show-login">Login</a></p>
+        </div>
+    </div>
+    
+    <script>
+        document.getElementById('show-signup').addEventListener('click', function() {
+            document.getElementById('login-container').classList.remove('active');
+            document.getElementById('signup-container').classList.add('active');
+        });
+        document.getElementById('show-login').addEventListener('click', function() {
+            document.getElementById('signup-container').classList.remove('active');
+            document.getElementById('login-container').classList.add('active');
+        });
+
+        function showError(inputId, errorId, condition) {
+            document.getElementById(errorId).style.display = condition ? 'block' : 'none';
+        }
+
+        document.getElementById('login-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            let email = document.getElementById('login-email').value;
+            let password = document.getElementById('login-password').value;
+            let validEmail = email.includes('@');
+            let validPassword = password.length >= 6;
+            showError('login-email', 'login-email-error', !validEmail);
+            showError('login-password', 'login-password-error', !validPassword);
+            if (validEmail && validPassword) {
+                alert('Login Successful! Redirecting to homepage...');
+                window.location.href = 'homepage.html';
+            }
+        });
+
+        document.getElementById('signup-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            let name = document.getElementById('signup-name').value;
+            let email = document.getElementById('signup-email').value;
+            let password = document.getElementById('signup-password').value;
+            let nameRegex = /^[A-Za-z ]{3,}$/;
+            let validName = nameRegex.test(name);
+            let validEmail = email.includes('@');
+            let validPassword = password.length >= 6;
+            showError('signup-name', 'signup-name-error', !validName);
+            showError('signup-email', 'signup-email-error', !validEmail);
+            showError('signup-password', 'signup-password-error', !validPassword);
+            if (validName && validEmail && validPassword) {
+                alert('Account Created! You can now log in.');
+                document.getElementById('signup-container').classList.remove('active');
+                document.getElementById('login-container').classList.add('active');
+            }
+        });
+    </script>
+</body>
+</html>
